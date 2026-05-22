@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoevaluación de Liderazgo Situacional · Sembra</title>
+<link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crema: #F8F3EB;
+    --crema-dark: #E4D9CA;
+    --coral: #E2502E;
+    --naranja: #FF8D33;
+    --teal: #06767B;
+    --teal-light: #75C2BD;
+    --texto: #2C2016;
+    --texto-suave: #7A6A5A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Mulish', sans-serif;
+    background: var(--crema);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--teal);
+    padding: 2rem 1.5rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -30px; left: -20px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,141,51,0.15);
+  }
+  .logo-tag {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    margin-bottom: .5rem;
+  }
+  .header h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.25;
+    margin-bottom: .4rem;
+  }
+  .header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  /* INSTRUCCIONES */
+  .instrucciones {
+    background: var(--crema-dark);
+    border-left: 4px solid var(--naranja);
+    margin: 1.25rem 1rem;
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.1rem;
+    font-size: 13px;
+    color: var(--texto-suave);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* PROGRESO */
+  .progreso-wrap {
+    padding: 0 1rem .5rem;
+  }
+  .progreso-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--texto-suave);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .progreso-bar-bg {
+    background: var(--crema-dark);
+    border-radius: 99px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progreso-bar {
+    background: linear-gradient(90deg, var(--teal), var(--teal-light));
+    height: 100%;
+    border-radius: 99px;
+    transition: width .4s ease;
+    width: 0%;
+  }
+
+  /* SITUACIONES */
+  .situaciones {
+    padding: 0 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .situacion {
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: box-shadow .2s;
+  }
+  .situacion.respondida {
+    box-shadow: 0 2px 8px rgba(6,118,123,0.15);
+  }
+
+  .sit-header {
+    background: var(--teal);
+    padding: .65rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .sit-num {
+    background: var(--naranja);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 800;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .sit-titulo {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+
+  .sit-texto {
+    padding: .9rem 1rem .75rem;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--texto);
+    border-bottom: 1px solid var(--crema-dark);
+  }
+
+  .sit-pregunta {
+    padding: .6rem 1rem .25rem;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--coral);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  .opciones {
+    padding: .25rem .75rem .9rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  .opcion {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    padding: .6rem .75rem;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all .15s;
+    background: var(--crema);
+  }
+  .opcion:hover {
+    background: #EEF7F7;
+    border-color: var(--teal-light);
+  }
+  .opcion input[type="radio"] {
+    display: none;
+  }
+  .opcion-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--crema-dark);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+    background: #fff;
+  }
+  .opcion-letra {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--teal);
+    opacity: 0;
+    transition: opacity .15s;
+  }
+  .opcion-texto {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--texto);
+    font-weight: 500;
+  }
+
+  .opcion.seleccionada {
+    background: #EEF7F7;
+    border-color: var(--teal);
+  }
+  .opcion.seleccionada .opcion-dot {
+    background: var(--teal);
+    border-color: var(--teal);
+  }
+  .opcion.seleccionada .opcion-letra {
+    opacity: 1;
+    color: #fff;
+  }
+  .opcion.seleccionada .opcion-texto {
+    color: var(--teal);
+    font-weight: 700;
+  }
+
+  /* BOTÓN */
+  .btn-wrap {
+    padding: .5rem 1rem 1.5rem;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to top, var(--crema) 80%, transparent);
+    padding-top: 1rem;
+  }
+
+  .btn-calcular {
+    width: 100%;
+    background: var(--coral);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 1rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .02em;
+    opacity: .4;
+    pointer-events: none;
+  }
+  .btn-calcular.activo {
+    opacity: 1;
+    pointer-events: all;
+    box-shadow: 0 4px 16px rgba(226,80,46,0.35);
+  }
+  .btn-calcular.activo:active {
+    transform: scale(0.98);
+  }
+
+  /* RESULTADO */
+  .resultado {
+    display: none;
+    padding: 1rem;
+  }
+
+  .resultado-header {
+    background: var(--teal);
+    border-radius: 16px;
+    padding: 1.5rem 1.25rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .resultado-header::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+  }
+  .resultado-header h2 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--teal-light);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    margin-bottom: .4rem;
+  }
+  .estilo-predominante {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .estilo-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    margin-top: .4rem;
+    font-weight: 500;
+  }
+
+  .barras {
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
+    margin-bottom: 1rem;
+  }
+  .barra-fila {
+    background: #fff;
+    border-radius: 12px;
+    padding: .85rem 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .barra-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+  }
+  .barra-nombre {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--texto);
+  }
+  .barra-num {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--teal);
+  }
+  .barra-bg {
+    background: var(--crema-dark);
+    border-radius: 99px;
+    height: 8px;
+    overflow: hidden;
+  }
+  .barra-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 1s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+  .barra-fila.predominante .barra-nombre { color: var(--coral); }
+  .barra-fila.predominante .barra-num { color: var(--coral); }
+  .barra-fila.predominante { border: 2px solid var(--coral); }
+
+  .nota-final {
+    background: var(--crema-dark);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--texto-suave);
+    font-weight: 600;
+    border-left: 4px solid var(--naranja);
+    border-radius: 0 12px 12px 0;
+  }
+  .nota-final strong {
+    color: var(--texto);
+  }
+
+  .btn-reiniciar {
+    width: 100%;
+    background: transparent;
+    color: var(--teal);
+    border: 2px solid var(--teal);
+    border-radius: 12px;
+    padding: .85rem;
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all .2s;
+  }
+  .btn-reiniciar:active { opacity: .7; }
+
+  .form-wrap { display: block; }
+</style>
+</head>
+<body>
+
+<div class="form-wrap" id="formWrap">
+
+  <div class="header">
+    <div class="logo-tag">Sembra Consultora</div>
+    <h1>Autoevaluación de<br>Liderazgo Situacional</h1>
+    <p>Hersey & Blanchard · 12 situaciones</p>
+  </div>
+
+  <div class="instrucciones">
+    Elegí <strong>una sola opción</strong> por situación. No busques la respuesta ideal — elegí lo que vos harías o habrías hecho en un pasado reciente. Tenés 15 minutos.
+  </div>
+
+  <div class="progreso-wrap">
+    <div class="progreso-label">
+      <span>Progreso</span>
+      <span id="progresoTexto">0 de 12</span>
+    </div>
+    <div class="progreso-bar-bg">
+      <div class="progreso-bar" id="progresoBar"></div>
+    </div>
+  </div>
+
+  <div class="situaciones" id="situaciones"></div>
+
+  <div class="btn-wrap">
+    <button class="btn-calcular" id="btnCalcular" onclick="calcular()">
+      Ver mi estilo predominante →
+    </button>
+  </div>
+
+</div>
+
+<div class="resultado" id="resultado">
+  <div class="resultado-header">
+    <h2>Tu estilo predominante</h2>
+    <div class="estilo-predominante" id="estiloNombre">—</div>
+    <div class="estilo-desc" id="estiloDesc">—</div>
+  </div>
+
+  <div class="barras" id="barras"></div>
+
+  <div class="nota-final">
+    <strong>Recordá:</strong> este resultado muestra tu tendencia natural, no si sos buen/a líder o mal/a líder. El mejor estilo es el que la persona y la situación necesitan — tener un predominante no es un problema; el problema es usarlo siempre, con todos, para todo.
+  </div>
+
+  <button class="btn-reiniciar" onclick="reiniciar()">Volver a empezar</button>
+</div>
+
+<script>
+// GRILLA DE CORRECCIÓN — Parte 1: Preferencias de Estilos
+// Columnas: S1=Dirigir, S2=Persuadir, S3=Participar, S4=Delegar
+// Formato: { a: estilo, b: estilo, c: estilo, d: estilo } donde estilo es 1,2,3,4
+const grilla = [
+  { a:1, b:3, c:2, d:4 }, // Sit 1: A=S1, C=S2, B=S3, D=S4
+  { a:3, b:1, c:3, d:2 }, // Sit 2: B=S1, D=S2, C=S3, A=S4  → corrección: B=1,D=2,C=3,A=4
+  { a:4, b:3, c:2, d:1 }, // Sit 3: D=S1,A=S2,B=S3,C=S4
+  { a:3, b:1, c:4, d:2 }, // Sit 4: B=S1,D=S2,A=S3,C=S4
+  { a:4, b:3, c:3, d:1 }, // Sit 5: D=S1,C=S2,B=S3,A=S4
+  { a:2, b:4, c:1, d:3 }, // Sit 6: C=S1,A=S2,D=S3,B=S4
+  { a:4, b:1, c:2, d:3 }, // Sit 7: D=S1,B=S2,C=S3,A=S4
+  { a:4, b:1, c:2, d:3 }, // Sit 8 corregida abajo
+  { a:1, b:4, c:3, d:2 }, // Sit 9: A=S1,D=S2,C=S3,B=S4
+  { a:4, b:2, c:3, d:1 }, // Sit 10: D=S1,A=S2,C=S3,B=S4
+  { a:1, b:4, c:2, d:3 }, // Sit 11: A=S1,C=S2,D=S3,B=S4
+  { a:3, b:1, c:4, d:2 }, // Sit 12: D=S1,B=S2,A=S3,C=S4
+];
+
+// Corrección manual según tabla página 7:
+// 1: A=S1 C=S2 B=S3 D=S4
+// 2: B=S1 D=S2 C=S3 A=S4 → {a:4,b:1,c:3,d:2}
+// 3: D=S1 A=S2 B=S3 C=S4 → {a:2,b:3,c:4,d:1}
+// 4: B=S1 D=S2 A=S3 C=S4 → {a:3,b:1,c:4,d:2}
+// 5: D=S1 C=S2 B=S3 A=S4 → {a:4,b:3,c:2,d:1}
+// 6: C=S1 A=S2 D=S3 B=S4 → {a:2,b:4,c:1,d:3}
+// 7: D=S1 B=S2 C=S3 A=S4 → {a:4,b:2,c:3,d:1} — CORRECCIÓN
+// 8: C=S1 B=S2 D=S3 A=S4 → {a:4,b:2,c:1,d:3}
+// 9: A=S1 D=S2 C=S3 B=S4 → {a:1,b:4,c:3,d:2}
+// 10:D=S1 A=S2 C=S3 B=S4 → {a:2,b:4,c:3,d:1}
+// 11:A=S1 C=S2 D=S3 B=S4 → {a:1,b:4,c:2,d:3}
+// 12:D=S1 B=S2 A=S3 C=S4 → {a:3,b:2,c:4,d:1}
+
+const grillaCorrecta = [
+  {a:1,b:3,c:2,d:4}, // 1
+  {a:4,b:1,c:3,d:2}, // 2
+  {a:2,b:3,c:4,d:1}, // 3
+  {a:3,b:1,c:4,d:2}, // 4
+  {a:4,b:3,c:2,d:1}, // 5
+  {a:2,b:4,c:1,d:3}, // 6
+  {a:4,b:2,c:3,d:1}, // 7
+  {a:4,b:2,c:1,d:3}, // 8
+  {a:1,b:4,c:3,d:2}, // 9
+  {a:2,b:4,c:3,d:1}, // 10
+  {a:1,b:4,c:2,d:3}, // 11
+  {a:3,b:2,c:4,d:1}, // 12
+];
+
+const situaciones = [
+  {
+    texto: "Tenés un/a colaborador/a que no ha venido respondiendo a tus indicaciones ni a las acciones de apoyo que le ofreciste. Su rendimiento viene decayendo.",
+    pregunta: "¿Cuál sería tu reacción natural?",
+    opciones: [
+      "Establecés indicaciones precisas sobre lo que esperás y le comunicás cómo vas a controlar su desempeño.",
+      "Le proponés una charla en privado para que te presente sus sugerencias de cómo realizar la tarea.",
+      "Intentás demostrar la necesidad de cumplir los objetivos dándole las razones que existen para ello.",
+      "Le comunicás los objetivos generales y le permitís que se desempeñe con total autonomía."
+    ]
+  },
+  {
+    texto: "Tenés un/a colaborador/a que está mejorando en su desempeño. Es consciente de esto y ha comenzado a hacer sugerencias que parecen atinadas y valiosas.",
+    pregunta: "¿Qué harías en este caso?",
+    opciones: [
+      "Te asegurás de que reciba toda la información necesaria para consolidar sus logros y escuchás sus ideas.",
+      "Aumentás el cuidado sobre sus tareas e incrementás tus indicaciones.",
+      "No hacés nada y lo/la dejás actuar.",
+      "Te reunís para analizar su desempeño y le das tus opiniones fundamentando los aspectos positivos e importantes de la tarea."
+    ]
+  },
+  {
+    texto: "Acabás de ser nombrado/a supervisor/a de un sector importante, reemplazando a alguien muy reconocido/a que se jubila. Fuiste bien recibido/a y las relaciones son buenas. Tuviste que cambiar de puesto a casi todos/as los/as colaboradores/as. Uno/a de ellos/as es el/la más afectado/a y debe desempeñarse en tareas bastante diferentes. Tendrá que aplicar una metodología totalmente nueva para él/ella, aunque fue muy efectivo/a en su trabajo anterior.",
+    pregunta: "¿Cuál sería tu probable reacción?",
+    opciones: [
+      "Lo/la estimulás dándole las razones por las que deberá aplicar la nueva metodología y le permitís que la estudie y resuelva cómo aplicarla.",
+      "Discutís con él/ella la conveniencia de aplicar la nueva metodología y le pedís sus opiniones.",
+      "Fijás los objetivos y ponés a su alcance los elementos para que aprenda la nueva metodología y la aplique según su propio criterio.",
+      "Te reunís y organizás el aprendizaje de la nueva metodología, le informás claramente lo que se espera y los objetivos a alcanzar. Lo/la acompañás en las primeras aplicaciones."
+    ]
+  },
+  {
+    texto: "Contás con un/a colaborador/a muy eficiente en tareas administrativas. Su trabajo es de toda confianza y seguridad. Se están discutiendo algunos pequeños cambios en la forma de llevar la administración.",
+    pregunta: "¿Qué harías en este caso?",
+    opciones: [
+      "Le pedís opinión y decidís los cambios.",
+      "Decidís los cambios y se los comunicás.",
+      "Lo/la hacés intervenir en las discusiones y le delegás la forma de implementar lo decidido.",
+      "Le explicás las razones de los cambios que fueron decididos."
+    ]
+  },
+  {
+    texto: "Uno/a de tus colaboradores/as ha venido obteniendo logros en una tarea que se le asignó recientemente. Estuviste controlando y contribuyendo con indicaciones precisas. Ahora siente seguridad para realizar la tarea.",
+    pregunta: "¿Cuál sería tu manera natural de actuar?",
+    opciones: [
+      "Lo/la dejás desempeñarse con total autonomía en esta tarea.",
+      "Le pedís sugerencias de cómo mejorar la realización de la tarea.",
+      "Te reunís y conversan sobre la tarea analizando riesgos, beneficios y efectos, acordando cómo continuarán en el futuro.",
+      "Dados los buenos resultados, continuás con el mismo estilo de supervisión."
+    ]
+  },
+  {
+    texto: "Contás con un/a colaborador/a que se ha venido desempeñando satisfactoriamente y de manera bastante autónoma. La restricción de recursos obliga a cambiar algunos de los métodos que está utilizando.",
+    pregunta: "¿Qué harías en este caso?",
+    opciones: [
+      "Tomás las decisiones necesarias y te sentás con él/ella para explicárselas y darle su fundamentación.",
+      "Le informás de la necesidad de hacer cambios y le delegás la tarea.",
+      "Decidís los cambios y se los comunicás.",
+      "Deciden juntos/as los cambios a realizar habiendo establecido los objetivos."
+    ]
+  },
+  {
+    texto: "Recientemente se incorporaron nuevas actividades y las tareas de tus colaboradores/as se verán modificadas. El grupo es trabajador y siempre demostró voluntad de cooperar. No están muy informados/as de lo que estos cambios significan.",
+    pregunta: "¿Cuál sería tu actitud?",
+    opciones: [
+      "Informás de la necesidad de efectuar cambios y dejás que el grupo los implemente.",
+      "Reunís al grupo, explicás las razones por las que deberán hacerse los cambios y fijás los objetivos. Entregás toda la información necesaria para que se comprenda la situación.",
+      "Reunís al grupo y pedís las opiniones de los miembros respecto a los cambios. Decidís los cambios, los comunicás y supervisás cuidadosamente.",
+      "Citas al grupo y mencionás en detalle los pasos a seguir."
+    ]
+  },
+  {
+    texto: "Tenés que implementar algunos cambios de procedimiento menores resultantes de un proceso de reingeniería que afecta a clientes internos. El grupo conoce la situación, es solvente y autónomo, y ha demostrado flexibilidad en situaciones similares.",
+    pregunta: "¿Qué harías?",
+    opciones: [
+      "Le das la información al grupo y delegás la implementación.",
+      "Tomás decisiones y en una reunión las comunicás fundamentándolas.",
+      "Tomás decisiones y las comunicás individualmente supervisando cuidadosamente su cumplimiento.",
+      "Reunís al grupo, planteás el problema y pedís sugerencias para luego tomar la decisión."
+    ]
+  },
+  {
+    texto: "El grupo que conducís ha manejado con autonomía y solvencia sus responsabilidades, pero ahora notás que están encontrando dificultades con las últimas actividades propuestas por la dirección. Hay que hacer un estudio para una importante redistribución de tareas y percibes que están algo inquietos/as.",
+    pregunta: "¿Qué harías en esta situación?",
+    opciones: [
+      "Tomás el estudio a tu cargo.",
+      "Definís con precisión los objetivos y dejás que el grupo trabaje autónomamente como siempre.",
+      "Te reunís con el grupo y dirigís la discusión en búsqueda del mejor planteo del estudio, estimulando el aporte de ideas.",
+      "Te reunís con el grupo y les explicás la importancia de resolver este estudio correctamente. Supervisás con todo cuidado."
+    ]
+  },
+  {
+    texto: "La situación anterior se agravó notablemente. Se acerca el plazo de la redistribución de tareas y el grupo está desorientado. La gerencia se enteró y te está presionando por resultados.",
+    pregunta: "¿Qué harías en este caso?",
+    opciones: [
+      "Te reunís con el grupo y les explicás la importancia de resolver el estudio correctamente. Supervisás con todo cuidado.",
+      "Definís con precisión los objetivos y dejás que el grupo trabaje autónomamente como siempre.",
+      "Te reunís con el grupo y dirigís la discusión en búsqueda del mejor planteo, estimulando el aporte de ideas.",
+      "Tomás la conducción del estudio a tu cargo."
+    ]
+  },
+  {
+    texto: "Al incorporarse las nuevas disposiciones, hay un sector que casi no se vio modificado. El grupo es eficiente y ha venido respondiendo con seguridad a los pocos cambios que se requirieron.",
+    pregunta: "¿Qué harías?",
+    opciones: [
+      "Informás que, ante la situación de reorganizaciones, será necesario conducir al grupo con instrucciones más precisas y controlar cuidadosamente el desempeño.",
+      "No hacés nada. Seguís tu conducta habitual.",
+      "Reunís al grupo y fundamentás la necesidad de aumentar el control sobre las tareas.",
+      "Reunís al grupo para discutir y recibir sugerencias de cómo actuar en la presente situación."
+    ]
+  },
+  {
+    texto: "El grupo ha venido reduciendo su desempeño como consecuencia de la disminución de recursos disponibles. Se había caracterizado por ser un grupo dinámico que con frecuencia hacía aportes y sugerencias. La situación actual no es crítica ni extrema.",
+    pregunta: "¿Qué harías?",
+    opciones: [
+      "Reunís al grupo y pedís sugerencias.",
+      "Reunís al grupo, describís la situación y lo que se espera que suceda en el futuro próximo. Revisás los objetivos y aumentás cuidadosamente el control sobre las tareas.",
+      "No hacés nada. El grupo es bueno y reaccionará.",
+      "Incrementás el control sobre el cumplimiento de las tareas, redefinís los objetivos y plazos."
+    ]
+  }
+];
+
+const estilos = {
+  1: { nombre: "Dirigir", desc: "Alta dirección, baja relación. Indicaciones claras y seguimiento cercano.", color: "#E2502E" },
+  2: { nombre: "Persuadir", desc: "Alta dirección, alta relación. Explicás el porqué y generás compromiso.", color: "#FF8D33" },
+  3: { nombre: "Participar", desc: "Baja dirección, alta relación. Escuchás, acompañás y decidís juntos/as.", color: "#06767B" },
+  4: { nombre: "Delegar", desc: "Baja dirección, baja relación. Confiás en la autonomía del/la colaborador/a.", color: "#75C2BD" },
+};
+
+const letras = ['a','b','c','d'];
+const letrasLabel = ['A','B','C','D'];
+let respuestas = new Array(12).fill(null);
+
+function renderSituaciones() {
+  const cont = document.getElementById('situaciones');
+  cont.innerHTML = '';
+  situaciones.forEach((sit, i) => {
+    const div = document.createElement('div');
+    div.className = 'situacion';
+    div.id = `sit-${i}`;
+    div.innerHTML = `
+      <div class="sit-header">
+        <div class="sit-num">${i+1}</div>
+        <div class="sit-titulo">Situación ${i+1}</div>
+      </div>
+      <div class="sit-texto">${sit.texto}</div>
+      <div class="sit-pregunta">${sit.pregunta}</div>
+      <div class="opciones">
+        ${sit.opciones.map((op, j) => `
+          <label class="opcion" id="opcion-${i}-${j}" onclick="elegir(${i}, '${letras[j]}', ${j})">
+            <input type="radio" name="sit${i}" value="${letras[j]}">
+            <div class="opcion-dot"><span class="opcion-letra">${letrasLabel[j]}</span></div>
+            <span class="opcion-texto">${op}</span>
+          </label>
+        `).join('')}
+      </div>
+    `;
+    cont.appendChild(div);
+  });
+}
+
+function elegir(sitIdx, letra, opIdx) {
+  respuestas[sitIdx] = letra;
+  // Limpiar selección anterior
+  for (let j = 0; j < 4; j++) {
+    const el = document.getElementById(`opcion-${sitIdx}-${j}`);
+    if (el) el.classList.remove('seleccionada');
+  }
+  // Marcar nueva
+  const sel = document.getElementById(`opcion-${sitIdx}-${opIdx}`);
+  if (sel) sel.classList.add('seleccionada');
+  // Marcar situación como respondida
+  const sit = document.getElementById(`sit-${sitIdx}`);
+  if (sit) sit.classList.add('respondida');
+  actualizarProgreso();
+}
+
+function actualizarProgreso() {
+  const respondidas = respuestas.filter(r => r !== null).length;
+  document.getElementById('progresoTexto').textContent = `${respondidas} de 12`;
+  document.getElementById('progresoBar').style.width = `${(respondidas/12)*100}%`;
+  const btn = document.getElementById('btnCalcular');
+  if (respondidas === 12) {
+    btn.classList.add('activo');
+  } else {
+    btn.classList.remove('activo');
+  }
+}
+
+function calcular() {
+  // Sumar por estilo
+  const totales = {1:0, 2:0, 3:0, 4:0};
+  respuestas.forEach((letra, i) => {
+    if (letra && grillaCorrecta[i]) {
+      const estilo = grillaCorrecta[i][letra];
+      if (estilo) totales[estilo]++;
+    }
+  });
+
+  // Encontrar predominante
+  let maxVal = 0, maxEstilo = 1;
+  for (let e = 1; e <= 4; e++) {
+    if (totales[e] > maxVal) { maxVal = totales[e]; maxEstilo = e; }
+  }
+
+  // Mostrar resultado
+  document.getElementById('formWrap').style.display = 'none';
+  const resDiv = document.getElementById('resultado');
+  resDiv.style.display = 'block';
+
+  document.getElementById('estiloNombre').textContent = estilos[maxEstilo].nombre;
+  document.getElementById('estiloDesc').textContent = estilos[maxEstilo].desc;
+
+  // Barras
+  const barrasCont = document.getElementById('barras');
+  barrasCont.innerHTML = '';
+  const maxPosible = 12;
+  for (let e = 1; e <= 4; e++) {
+    const pct = (totales[e] / maxPosible) * 100;
+    const esPred = e === maxEstilo;
+    const div = document.createElement('div');
+    div.className = `barra-fila${esPred ? ' predominante' : ''}`;
+    div.innerHTML = `
+      <div class="barra-top">
+        <span class="barra-nombre">S${e} · ${estilos[e].nombre}</span>
+        <span class="barra-num">${totales[e]}</span>
+      </div>
+      <div class="barra-bg">
+        <div class="barra-fill" id="fill-${e}" style="background:${estilos[e].color}"></div>
+      </div>
+      <div style="font-size:11px;color:var(--texto-suave);margin-top:.35rem;font-weight:500">${estilos[e].desc}</div>
+    `;
+    barrasCont.appendChild(div);
+    setTimeout(() => {
+      document.getElementById(`fill-${e}`).style.width = `${pct}%`;
+    }, 100 + e * 80);
+  }
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function reiniciar() {
+  respuestas = new Array(12).fill(null);
+  document.getElementById('resultado').style.display = 'none';
+  document.getElementById('formWrap').style.display = 'block';
+  renderSituaciones();
+  actualizarProgreso();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+renderSituaciones();
+actualizarProgreso();
+</script>
+</body>
+</html>
